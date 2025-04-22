@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
     "objectID": "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html",
     "href": "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html",
     "title": "Hands-on Exercise 1",
@@ -7,10 +14,10 @@
     "text": "pacman::p_load(tidyverse)\n\n\nexam_data &lt;- read_csv(\"data/Exam_data.csv\")\n\nRows: 322 Columns: 7\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (4): ID, CLASS, GENDER, RACE\ndbl (3): ENGLISH, MATHS, SCIENCE\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\nHistogram: English Scores Distribution of English Scores Shows how English scores are distributed among students.\n\n\n\n\n\nHistogram: Maths Scores Distribution of Maths Scores Indicates the spread of mathematics performance.\n\n\n\n\n\nHistogram: Science Scores Distribution of Science Scores Highlights how students are performing in Science.\n\n\n\n\n\nBoxplots by Gender Boxplot of English Scores by Gender Compares distribution of English scores between genders.\n\n\n\n\n\nBoxplot of Maths Scores by Gender\n\n\n\n\n\nBoxplot of Science Scores by Gender\n\n\n\n\n\nScatter Plots English vs Maths Reveals the correlation between English and Math scores.\n\n\n\n\n\nMaths vs Science Checks if high performance in Math relates to Science.\n\n\n\n\n\nBar Chart of Average Scores by Race Average Scores by Race Compares mean subject scores across different races."
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ISSS608-VISUAL ANALYTICS",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "Welcome to ISSS608 Visual Analytics and Applications."
   }
 ]
