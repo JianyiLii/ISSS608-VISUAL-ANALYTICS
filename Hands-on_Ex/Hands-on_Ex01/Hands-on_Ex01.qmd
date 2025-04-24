@@ -3,79 +3,72 @@ title: "Hands-on Exercise 1"
 author: "Li Jianyi"
 ---
 
-
 ```{r}
 pacman::p_load(tidyverse)
 ```
-
 
 ```{r}
 exam_data <- read_csv("data/Exam_data.csv")
 ```
 
+Histogram: English Scores Distribution of English Scores Shows how English scores are distributed among students.
 
-Histogram: English Scores
-Distribution of English Scores
-Shows how English scores are distributed among students.
 ```{r}
 #| echo: false
 ggplot(exam_data, aes(x = ENGLISH)) + geom_histogram(binwidth = 5, fill = "skyblue", color = "black") + labs(title = "Distribution of English Scores", x = "Score", y = "Count")
 ```
 
-Histogram: Maths Scores
-Distribution of Maths Scores
-Indicates the spread of mathematics performance.
+Histogram: Maths Scores Distribution of Maths Scores Indicates the spread of mathematics performance.
+
 ```{r}
 #| echo: false
 ggplot(exam_data, aes(x = MATHS)) + geom_histogram(binwidth = 5, fill = "orange", color = "black") + labs(title = "Distribution of Maths Scores", x = "Score", y = "Count")
 ```
 
-Histogram: Science Scores
-Distribution of Science Scores
-Highlights how students are performing in Science.
+Histogram: Science Scores Distribution of Science Scores Highlights how students are performing in Science.
+
 ```{r}
 #| echo: false
 ggplot(exam_data, aes(x = SCIENCE)) + geom_histogram(binwidth = 5, fill = "lightgreen", color = "black") + labs(title = "Distribution of Science Scores", x = "Score", y = "Count")
 ```
 
-Boxplots by Gender
-Boxplot of English Scores by Gender
-Compares distribution of English scores between genders.
+Boxplots by Gender Boxplot of English Scores by Gender Compares distribution of English scores between genders.
+
 ```{r}
 #| echo: false
 ggplot(exam_data, aes(x = GENDER, y = ENGLISH)) + geom_boxplot(fill = "grey") + labs(title = "English Scores by Gender", x = "Gender", y = "English Score")
 ```
 
 Boxplot of Maths Scores by Gender
+
 ```{r}
 #| echo: false
 ggplot(exam_data, aes(x = GENDER, y = MATHS)) + geom_boxplot(fill = "lightblue") + labs(title = "Maths Scores by Gender", x = "Gender", y = "Maths Score")
 ```
 
 Boxplot of Science Scores by Gender
+
 ```{r}
 #| echo: false
 ggplot(exam_data, aes(x = GENDER, y = SCIENCE)) + geom_boxplot(fill = "lightpink") + labs(title = "Science Scores by Gender", x = "Gender", y = "Science Score")
 ```
 
-Scatter Plots
-English vs Maths
-Reveals the correlation between English and Math scores.
+Scatter Plots English vs Maths Reveals the correlation between English and Math scores.
+
 ```{r}
 #| echo: false
 ggplot(exam_data, aes(x = ENGLISH, y = MATHS)) + geom_point() + labs(title = "English vs Maths", x = "English", y = "Maths")
 ```
 
-Maths vs Science
-Checks if high performance in Math relates to Science.
+Maths vs Science Checks if high performance in Math relates to Science.
+
 ```{r}
 #| echo: false
 ggplot(exam_data, aes(x = MATHS, y = SCIENCE)) + geom_point(color = "darkgreen") + labs(title = "Maths vs Science", x = "Maths", y = "Science")
 ```
 
-Bar Chart of Average Scores by Race
-Average Scores by Race
-Compares mean subject scores across different races.
+Bar Chart of Average Scores by Race Average Scores by Race Compares mean subject scores across different races.
+
 ```{r}
 #| echo: false
 exam_data_avg <- exam_data %>% group_by(RACE) %>% summarise(

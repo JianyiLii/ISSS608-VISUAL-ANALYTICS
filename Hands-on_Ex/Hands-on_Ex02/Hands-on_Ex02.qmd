@@ -1,0 +1,64 @@
+---
+title: "Hands-on Exercise 2"
+author: "Li Jianyi"
+date: "2025-04-24"
+format: html
+---
+
+```{r}
+pacman::p_load(tidyverse, ggrepel, ggthemes, hrbrthemes, patchwork)
+```
+
+```{r}
+exam_data <- read_csv("data/Exam_data.csv")
+```
+
+a scatterplot of English vs Maths scores.
+
+```{r}
+#| echo: false
+top_scores <- exam_data %>%
+  filter(MATHS > 95 | ENGLISH > 95)
+
+ggplot(exam_data, aes(x = ENGLISH, y = MATHS)) +
+  geom_point(color = "steelblue") +
+  geom_text_repel(data = top_scores, aes(label = ID), size = 3, max.overlaps = 1000) +
+  labs(
+    title = "English vs Maths Scores",
+    x = "English",
+    y = "Maths"
+  ) +
+  theme_minimal()
+```
+
+English vs Maths Scores
+
+```{r}
+#| echo: false
+ggplot(exam_data, aes(x = ENGLISH, y = MATHS)) +
+  geom_point(color = "darkred") +
+  labs(
+    title = "English vs Maths Scores",
+    x = "English",
+    y = "Maths"
+  ) +
+  theme_economist()
+```
+
+histograms of English and Maths scores side-by-side using the `patchwork` package.
+
+```{r}
+#| echo: false
+p1 <- ggplot(exam_data, aes(x = ENGLISH)) +
+  geom_histogram(fill = "skyblue", color = "black", binwidth = 5) +
+  labs(title = "English Score Distribution") +
+  theme_minimal()
+
+p2 <- ggplot(exam_data, aes(x = MATHS)) +
+  geom_histogram(fill = "salmon", color = "black", binwidth = 5) +
+  labs(title = "Maths Score Distribution") +
+  theme_minimal()
+
+# Combine with patchwork
+p1 + p2
+```
