@@ -1,0 +1,19 @@
+---
+title: "Hands-on Exercise 3a : <br>3  Programming Interactive Data Visualisation with R"
+description: ""
+date: "2025-05-01"
+date-modified: "2025-05-01"
+format: html
+editor: visual
+author: "Li Jianyi"
+execute:
+  eval: true #- Run the code and show the result.
+  echo: true #- Show the code in the output.
+  warning: false
+  freeze: true
+---
+
+<br> <br>
+
+
+
