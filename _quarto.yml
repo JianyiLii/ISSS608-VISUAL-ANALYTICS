@@ -4,7 +4,7 @@ project:
 website:
   title: ""
   navbar:
-    logo: "Visual analytics.png"   
+    logo: "images/Visual analytics 1.png"  
     left:
       - text: "Hands-on Exercise"
         menu:
@@ -12,16 +12,16 @@ website:
             href: "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html"
           - text: "Hands-on Exercise 2"
             href: "Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html"
-      # - text: "In-class Exercise"
-      #   menu:
-      #     - text: "In-class Exercise 1"
-      #       href: "In-class_Ex/In-class_Ex01/In-class_Ex01.html"
-      # - text: "Take-home Exercise"
-      #   menu:
-      #     - text: "Take-home Exercise 1"
-      #       href: "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html"
-      # - text: "Group Project"
-      #   href: "Project/project.html"
+      - text: "In-class Exercise"
+        menu:
+          - text: "In-class Exercise 1"
+            href: "In-class_Ex/In-class_Ex01/In-class_Ex01.html"
+      - text: "Take-home Exercise"
+        menu:
+          - text: "Take-home Exercise 1"
+            href: "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html"
+      - text: "Group Project"
+        href: "Project/project.html"
 
     right:
       - icon: house
@@ -32,5 +32,5 @@ format:
     theme: vapor
     css: styles.css
     toc: true
-
-editor: visual
+    code-fold: true
+    code-summary: "Click to view code"
