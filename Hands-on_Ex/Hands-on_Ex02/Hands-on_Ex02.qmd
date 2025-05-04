@@ -5,7 +5,7 @@ date: "2025-04-24"
 date-modified: "2025-05-01"
 format: html
 editor: visual
-author: "Li Jianyi"
+# author: "Li Jianyi"
 execute:
   eval: true #- Run the code and show the result.
   echo: true #- Show the code in the output.
@@ -16,11 +16,12 @@ execute:
 <br> <br>
 
 ### **2.1 Overview**
+
 In this chapter, you will be introduced to several ggplot2 extensions for creating more elegant and effective statistical graphics. By the end of this exercise, you will be able to:
 
-- control the placement of annotation on a graph by using functions provided in ggrepel package,
-- create professional publication quality figure by using functions provided in ggthemes and hrbrthemes packages,
-- plot composite figure by combining ggplot2 graphs by using patchwork package.
+-   control the placement of annotation on a graph by using functions provided in ggrepel package,
+-   create professional publication quality figure by using functions provided in ggthemes and hrbrthemes packages,
+-   plot composite figure by combining ggplot2 graphs by using patchwork package.
 
 ### **2.2 Getting started**
 
@@ -28,12 +29,11 @@ In this chapter, you will be introduced to several ggplot2 extensions for creati
 
 In this exercise, beside tidyverse, four R packages will be used. They are:
 
-- ggrepel: an R package provides geoms for ggplot2 to repel overlapping text labels.
-- ggthemes: an R package provides some extra themes, geoms, and scales for ‘ggplot2’.
-- hrbrthemes: an R package provides typography-centric themes and theme components for ggplot2.
-- patchwork: an R package for preparing composite figure created using ggplot2.
-- Code chunk below will be used to check if these packages have been installed and also will load them onto your working R environment.
-
+-   ggrepel: an R package provides geoms for ggplot2 to repel overlapping text labels.
+-   ggthemes: an R package provides some extra themes, geoms, and scales for ‘ggplot2’.
+-   hrbrthemes: an R package provides typography-centric themes and theme components for ggplot2.
+-   patchwork: an R package for preparing composite figure created using ggplot2.
+-   Code chunk below will be used to check if these packages have been installed and also will load them onto your working R environment.
 
 ```{r}
 #| code-fold: False
@@ -41,6 +41,7 @@ pacman::p_load(tidyverse, ggrepel, ggthemes, hrbrthemes, patchwork)
 ```
 
 ### **2.2.2 Importing data**
+
 For the purpose of this exercise, a data file called Exam_data will be used. It consists of year end examination grades of a cohort of primary 3 students from a local school. It is in csv file format.
 
 The code chunk below imports exam_data.csv into R environment by using [[*read_csv()*]{.underline}](https://readr.tidyverse.org/reference/read_delim.html) function of [[*readr*]{.underline}](https://readr.tidyverse.org/) package. readr is one of the tidyverse package.
@@ -52,14 +53,16 @@ exam_data <- read_csv("data/Exam_data.csv")
 
 There are a total of seven attributes in the exam_data tibble data frame. Four of them are categorical data type and the other three are in continuous data type.
 
-- The categorical attributes are: ID, CLASS, GENDER and RACE.
-- The continuous attributes are: MATHS, ENGLISH and SCIENCE.
+-   The categorical attributes are: ID, CLASS, GENDER and RACE.
+-   The continuous attributes are: MATHS, ENGLISH and SCIENCE.
 
 ### **2.3 Beyond ggplot2 Annotation: ggrepel**
+
 One of the challenge in plotting statistical graph is annotation, especially with large number of data points.
 
-::: {.panel-tabset}
+::: panel-tabset
 ## The plot
+
 ```{r}
 #| code-fold: False
 #| echo: false
@@ -78,6 +81,7 @@ ggplot(data=exam_data,
 ```
 
 ## The code
+
 ```{r}
 #| code-fold: False
 #| eval: false
@@ -96,14 +100,13 @@ ggplot(data=exam_data,
 ```
 :::
 
-[_ggrepel_](https://ggrepel.slowkow.com/) is an extension of ggplot2 package which provides geoms for ggplot2 to repel overlapping text as in our examples on the right.
-![diagram](1.png)
-We simply replace geom_text() by [_geom_text_repel()_](https://ggrepel.slowkow.com/reference/geom_text_repel.html) and geom_label() by [_geom_label_repel_](https://ggrepel.slowkow.com/reference/geom_text_repel.html).
+[*ggrepel*](https://ggrepel.slowkow.com/) is an extension of ggplot2 package which provides geoms for ggplot2 to repel overlapping text as in our examples on the right. ![diagram](1.png) We simply replace geom_text() by [*geom_text_repel()*](https://ggrepel.slowkow.com/reference/geom_text_repel.html) and geom_label() by [*geom_label_repel*](https://ggrepel.slowkow.com/reference/geom_text_repel.html).
 
 ### **2.3.1 Working with ggrepel**
 
-::: {.panel-tabset}
+::: panel-tabset
 ## The plot
+
 ```{r}
 #| code-fold: False
 #| echo: false
@@ -121,6 +124,7 @@ ggplot(data=exam_data,
 ```
 
 ## The code
+
 ```{r}
 #| code-fold: False
 #| eval: false
@@ -140,10 +144,11 @@ ggplot(data=exam_data,
 
 ### **2.4 Beyond ggplot2 Themes**
 
-ggplot2 comes with eight [_built-in themes_](https://ggplot2.tidyverse.org/reference/ggtheme.html), they are: theme_gray(), theme_bw(), theme_classic(), theme_dark(), theme_light(), theme_linedraw(), theme_minimal(), and theme_void().
+ggplot2 comes with eight [*built-in themes*](https://ggplot2.tidyverse.org/reference/ggtheme.html), they are: theme_gray(), theme_bw(), theme_classic(), theme_dark(), theme_light(), theme_linedraw(), theme_minimal(), and theme_void().
 
-::: {.panel-tabset}
+::: panel-tabset
 ## The plot
+
 ```{r}
 #| code-fold: False
 #| echo: false
@@ -158,6 +163,7 @@ ggplot(data=exam_data,
 ```
 
 ## The code
+
 ```{r}
 #| code-fold: False
 #| eval: false
@@ -171,15 +177,18 @@ ggplot(data=exam_data,
   ggtitle("Distribution of Maths scores") 
 ```
 :::
-Refer to this [_link_](https://ggplot2.tidyverse.org/reference/index.html#themes) to learn more about ggplot2 Themes
+
+Refer to this [*link*](https://ggplot2.tidyverse.org/reference/index.html#themes) to learn more about ggplot2 Themes
 
 ### **2.4.1 Working with ggtheme package**
-[_ggthemes_](https://cran.r-project.org/web/packages/ggthemes/index.html) provides [_‘ggplot2’ themes_](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/) that replicate the look of plots by Edward Tufte, Stephen Few, [_Fivethirtyeight_](https://abcnews.go.com/politics), [_The Economist_](https://www.economist.com/topics/graphic-detail), ‘Stata’, ‘Excel’, and [_The Wall Street Journal_](https://www.pinterest.com/wsjgraphics/wsj-graphics/), among others.
+
+[*ggthemes*](https://cran.r-project.org/web/packages/ggthemes/index.html) provides [*‘ggplot2’ themes*](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/) that replicate the look of plots by Edward Tufte, Stephen Few, [*Fivethirtyeight*](https://abcnews.go.com/politics), [*The Economist*](https://www.economist.com/topics/graphic-detail), ‘Stata’, ‘Excel’, and [*The Wall Street Journal*](https://www.pinterest.com/wsjgraphics/wsj-graphics/), among others.
 
 In the example below, The Economist theme is used.
 
-::: {.panel-tabset}
+::: panel-tabset
 ## The plot
+
 ```{r}
 #| code-fold: False
 #| echo: false
@@ -194,6 +203,7 @@ ggplot(data=exam_data,
 ```
 
 ## The code
+
 ```{r}
 #| code-fold: False
 #| eval: false
@@ -207,21 +217,5 @@ ggplot(data=exam_data,
   theme_economist()
 ```
 :::
-It also provides some extra geoms and scales for ‘ggplot2’. Consult [_this vignette_](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/) to learn more.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+It also provides some extra geoms and scales for ‘ggplot2’. Consult [*this vignette*](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/) to learn more.
