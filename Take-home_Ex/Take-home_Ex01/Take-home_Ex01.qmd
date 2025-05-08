@@ -14,6 +14,7 @@ execute:
 ---
 
 <!-- #| code-fold: false -->
+
 <!-- #| code-summary: "Click to view code" -->
 
 <br> <br>
@@ -318,8 +319,7 @@ Each bubble represents a planning area. Its position indicates the ageing struct
 
 The chart highlights regional disparities in demographic pressures. This type of visual is particularly useful for public policy makers to simultaneously assess youth dependency and ageing pressure across local areas.
 
-::: {.panel-tabset}
-
+::: panel-tabset
 ## Bubble Chart
 
 ```{r fig.width=10, fig.height=7}
@@ -370,6 +370,7 @@ ggplot(ageing_df, aes(x = Youth_Dependency, y = Ageing_Index, size = TotalPop, c
 ```
 
 ## Code
+
 ```{r fig.width=10, fig.height=7}
 #| code-fold: False
 #| eval: false
@@ -414,7 +415,6 @@ ggplot(ageing_df, aes(x = Youth_Dependency, y = Ageing_Index, size = TotalPop, c
   ) +
   theme_minimal(base_size = 12)
 ```
-
 :::
 
 ::: {.callout-note title="Insight"}
