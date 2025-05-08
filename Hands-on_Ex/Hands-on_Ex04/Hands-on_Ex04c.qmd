@@ -12,14 +12,20 @@ execute:
   warning: false
   freeze: true
 ---
-<!-- ::: {.callout-note} -->
-<!-- ```{r} -->
-<!-- #| code-fold: false -->
-<!-- #| code-summary: "Click to view code" -->
-<!-- ``` -->
-<!-- ::: -->
-<br> <br>
 
+<!-- ::: {.callout-note} -->
+
+<!-- ```{r} -->
+
+<!-- #| code-fold: false -->
+
+<!-- #| code-summary: "Click to view code" -->
+
+<!-- ``` -->
+
+<!-- ::: -->
+
+<br> <br>
 
 ## Learning Outcome
 
@@ -120,7 +126,7 @@ knitr::kable(head(my_sum), format = 'html')
 
 Now we are ready to plot the standard error bars of mean maths score by race as shown below.
 
-:::: panel-tabset
+::: panel-tabset
 ## The plot
 
 ```{r}
@@ -175,13 +181,13 @@ ggplot(my_sum) +
 -   The error bars are computed by using the formula mean+/-se.
 -   For `geom_point()`, it is important to indicate *stat="identity"*.
 :::
-::::
+:::
 
 ### Plotting confidence interval of point estimates
 
 Instead of plotting the standard error bar of point estimates, we can also plot the confidence intervals of mean maths score by race.
 
-:::: panel-tabset
+::: panel-tabset
 ## The plot
 
 ```{r}
@@ -239,7 +245,7 @@ ggplot(my_sum) +
 -   The error bars is sorted by using the average maths scores.
 -   `labs()` argument of ggplot2 is used to change the x-axis label.
 :::
-::::
+:::
 
 ### Visualizing the uncertainty of point estimates with interactive error bars
 
@@ -324,7 +330,6 @@ bscols(widths = c(4,8),
 
 ![](chap10/img/ggdist.png)
 
-
 ### Visualizing the uncertainty of point estimates: **ggdist** methods
 
 In the code chunk below, [`stat_pointinterval()`](https://mjskay.github.io/ggdist/reference/stat_pointinterval.html) of **ggdist** is used to build a visual for displaying distribution of maths scores by race.
@@ -404,43 +409,43 @@ exam %>%
 
 Gentle advice: This function comes with many arguments, students are advised to read the syntax reference for more detail.
 
-<!-- ## Visualising Uncertainty with Hypothetical Outcome Plots (HOPs) -->
+## Visualising Uncertainty with Hypothetical Outcome Plots (HOPs)
 
-<!-- ### Installing ungeviz package -->
+### Installing ungeviz package
 
-<!-- ```{r eval=FALSE} -->
-<!-- #| code-fold: false -->
-<!-- devtools::install_github("wilkelab/ungeviz") -->
-<!-- ``` -->
+```{r eval=FALSE}
+#| code-fold: false
+devtools::install_github("wilkelab/ungeviz")
+```
 
-<!-- Note: You only need to perform this step once. -->
+Note: You only need to perform this step once.
 
-<!-- ### Launch the application in R -->
+### Launch the application in R
 
-<!-- ```{r} -->
-<!-- #| code-fold: false -->
-<!-- library(ungeviz) -->
-<!-- ``` -->
+```{r}
+#| code-fold: false
+library(ungeviz)
+```
 
-<!-- ### Visualising Uncertainty with Hypothetical Outcome Plots (HOPs) -->
+### Visualising Uncertainty with Hypothetical Outcome Plots (HOPs)
 
-<!-- Next, the code chunk below will be used to build the HOPs. -->
+Next, the code chunk below will be used to build the HOPs.
 
-<!-- ```{r} -->
-<!-- #| code-fold: false -->
-<!-- ggplot(data = exam, -->
-<!--        (aes(x = factor(RACE), -->
-<!--             y = MATHS))) + -->
-<!--   geom_point(position = position_jitter( -->
-<!--     height = 0.3, -->
-<!--     width = 0.05), -->
-<!--     size = 0.4, -->
-<!--     color = "#0072B2", -->
-<!--     alpha = 1/2) + -->
-<!--   geom_hpline(data = sampler(25, -->
-<!--                              group = RACE), -->
-<!--               height = 0.6, -->
-<!--               color = "#D55E00") + -->
-<!--   theme_bw() + -->
-<!--   transition_states(.draw, 1, 3) -->
-<!-- ``` -->
+```{r}
+#| code-fold: false
+ggplot(data = exam,
+       (aes(x = factor(RACE),
+            y = MATHS))) +
+  geom_point(position = position_jitter(
+    height = 0.3,
+    width = 0.05),
+    size = 0.4,
+    color = "#0072B2",
+    alpha = 1/2) +
+  geom_hpline(data = sampler(25,
+                             group = RACE),
+              height = 0.6,
+              color = "#D55E00") +
+  theme_bw() +
+  transition_states(.draw, 1, 3)
+```

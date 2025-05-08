@@ -14,15 +14,10 @@ execute:
 ---
 
 <!-- ::: {.callout-note} -->
-
 <!-- ```{r} -->
-
 <!-- #| code-fold: false -->
-
 <!-- #| code-summary: "Click to view code" -->
-
 <!-- ``` -->
-
 <!-- ::: -->
 
 <br> <br>
