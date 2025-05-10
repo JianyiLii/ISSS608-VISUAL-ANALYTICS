@@ -2,24 +2,30 @@
 title: "Hands-on Exercise 4 (b) : <br> Visual Statistical Analysis"
 description: ""
 date: "2025-05-08"
-date-modified: "2025-05-08"
+# date-modified: ""
 format: html
 editor: visual
-# author: "Li Jianyi"
+author: "Li Jianyi"
 execute:
   eval: true #- Run the code and show the result.
   echo: true #- Show the code in the output.
   warning: false
   freeze: true
 ---
-<!-- ::: {.callout-note} -->
-<!-- ```{r} -->
-<!-- #| code-fold: false -->
-<!-- #| code-summary: "Click to view code" -->
-<!-- ``` -->
-<!-- ::: -->
-<br> <br>
 
+<!-- ::: {.callout-note} -->
+
+<!-- ```{r} -->
+
+<!-- #| code-fold: false -->
+
+<!-- #| code-summary: "Click to view code" -->
+
+<!-- ``` -->
+
+<!-- ::: -->
+
+<br> <br>
 
 ## Learning Outcome
 
@@ -41,7 +47,6 @@ In this hands-on exercise, you will gain hands-on experience on using:
 ```
 
 ![](chap10/img/image2.jpg)
-
 
 ## Getting Started
 
@@ -98,7 +103,6 @@ Default information: - statistical details - Bayes Factor - sample sizes - distr
 
 ![](chap10/img/image5.jpg)
 
-
 -   The [**Schwarz criterion**](https://www.statisticshowto.com/bayesian-information-criterion/) is one of the easiest ways to calculate rough approximation of the Bayes Factor.
 
 ### How to interpret Bayes Factor
@@ -106,7 +110,6 @@ Default information: - statistical details - Bayes Factor - sample sizes - distr
 A **Bayes Factor** can be any positive number. One of the most common interpretations is this one---first proposed by Harold Jeffereys (1961) and slightly modified by [Lee and Wagenmakers](https://www-tandfonline-com.libproxy.smu.edu.sg/doi/pdf/10.1080/00031305.1999.10474443?needAccess=true) in 2013:
 
 ![](chap10/img/image6.jpg){width="480"}
-
 
 ### Two-sample mean test: *ggbetweenstats()*
 
@@ -155,7 +158,6 @@ ggbetweenstats(
 ![](chap10/img/image8.jpg)
 
 ![](chap10/img/image9.jpg)
-
 
 ### Significant Test of Correlation: *ggscatterstats()*
 

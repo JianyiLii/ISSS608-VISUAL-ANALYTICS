@@ -31,12 +31,16 @@ website:
             href: "Hands-on_Ex/Hands-on_Ex04/Hands-on_Ex04d.html"
       - text: "In-class Exercise"
         menu:
-          - text: "In-class Exercise 1"
-            href: "In-class_Ex/In-class_Ex01/In-class_Ex01.html"
+          - text: "In-class Exercise 2"
+            href: "https://public.tableau.com/app/profile/jianyi.li/viz/In-classExercise2_17456547307330/Dashboard1"
+          - text: "In-class Exercise 3"
+            href: "https://public.tableau.com/app/profile/jianyi.li/viz/In-classExercise3_17462581267610/In-classExercise3"
       - text: "Take-home Exercise"
         menu:
-          - text: "Take-home Exercise 1"
-            href: "Take-home_Ex/Take-home_Ex01/Take-home_Ex01.html"
+          - text: "Take-home Exercise 1 - Phrase 1"
+            href: "Take-home_Ex/Take-home_Ex01/Take-home_Ex01a.html"
+          - text: "Take-home Exercise 1 - Phrase 2"
+            href: "Take-home_Ex/Take-home_Ex01/Take-home_Ex01b.html"
       - text: "Group Project"
         href: "Project/project.html"
 
@@ -46,7 +50,7 @@ website:
 
 format:
   html:
-    theme: vapor
+    theme: quartz
     css: styles.css
     toc: true
     code-fold: true

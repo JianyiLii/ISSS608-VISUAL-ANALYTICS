@@ -2,10 +2,10 @@
 title: "Hands-on Exercise 4 (a) : <br> Visualising Distribution"
 description: ""
 date: "2025-05-08"
-date-modified: "2025-05-08"
+# date-modified: ""
 format: html
 editor: visual
-# author: "Li Jianyi"
+author: "Li Jianyi"
 execute:
   eval: true #- Run the code and show the result.
   echo: true #- Show the code in the output.
@@ -14,10 +14,15 @@ execute:
 ---
 
 <!-- ::: {.callout-note} -->
+
 <!-- ```{r} -->
+
 <!-- #| code-fold: false -->
+
 <!-- #| code-summary: "Click to view code" -->
+
 <!-- ``` -->
+
 <!-- ::: -->
 
 <br> <br>

@@ -1,0 +1,23 @@
+---
+title: "Take-home Exercise 1 - Phrase 2: <br>Peer Review and Makeover "
+description: ""
+date: "2025-05-10"
+# date-modified: ""
+format: html
+editor: visual
+author: "Li Jianyi"
+execute:
+  eval: true #- Run the code and show the result.
+  echo: true #- Show the code in the output.
+  warning: false
+  freeze: true
+---
+
+<!-- ::: {.callout-note} -->
+<!-- ```{r} -->
+<!-- #| code-fold: false -->
+<!-- #| code-summary: "Click to view code" -->
+<!-- ``` -->
+<!-- ::: -->
+
+<br> <br>

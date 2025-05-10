@@ -14,10 +14,10 @@ execute:
 ---
 
 <!-- #| code-fold: false -->
+
 <!-- #| code-summary: "Click to view code" -->
 
 <br> <br>
-
 
 ## Learning Outcome
 
@@ -596,7 +596,6 @@ The *data_id* aesthetic is critical to link observations between plots and the t
 Plotly's R graphing library create interactive web graphics from **ggplot2** graphs and/or a custom interface to the (MIT-licensed) JavaScript library [**plotly.js**](https://plotly.com/javascript/) inspired by the grammar of graphics. Different from other plotly platform, plot.R is free and open source.
 
 ![](chap03/img/image2.jpg)
-
 
 There are two ways to create interactive graph by using plotly, they are:
 
