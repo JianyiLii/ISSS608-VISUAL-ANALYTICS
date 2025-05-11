@@ -50,7 +50,7 @@ website:
 
 format:
   html:
-    theme: quartz
+    theme: pulse
     css: styles.css
     toc: true
     code-fold: true
