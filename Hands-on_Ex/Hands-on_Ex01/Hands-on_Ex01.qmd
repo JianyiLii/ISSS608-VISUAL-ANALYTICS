@@ -3,7 +3,10 @@ title: "Hands-on Exercise 1 : <br> 1 A Layered Grammar of Graphics: ggplot2 meth
 description: ""
 date: ""
 date-modified: "Last-Modified"
-format: html
+format: 
+  html:
+    code-fold: true
+    code-summary: "Click to view code"
 editor: visual
 author: "Li Jianyi"
 execute:

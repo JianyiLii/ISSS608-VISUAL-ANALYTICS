@@ -3,7 +3,10 @@ title: "Take-home Exercise 1 - Phrase 2: <br>Peer Review and Makeover "
 description: ""
 date: "2025-05-10"
 # date-modified: ""
-format: html
+format: 
+  html:
+    code-fold: true
+    code-summary: "Click to view code"
 editor: visual
 author: "Li Jianyi"
 execute:
@@ -13,17 +16,6 @@ execute:
   freeze: true
 ---
 
-<!-- ::: callout-note -->
-
-<!-- ```{r} -->
-
-<!-- #| code-fold: false -->
-
-<!-- #| code-summary: "Click to view code" -->
-
-<!-- ``` -->
-
-<!-- ::: -->
 
 <br> <br>
 
@@ -391,5 +383,5 @@ Elderly: 65+ This ensures alignment with demographic research and public policy 
 
 ### **References**
 
-- [Yuan Yihao](https://isss-608-yihao-yuan.netlify.app/take-home_ex/take-home_ex01/take-home_ex01)
-- [Take-home exercise 1](https://isss608-ay2024-25apr.netlify.app/th_ex/th_ex1)
+-   [Yuan Yihao](https://isss-608-yihao-yuan.netlify.app/take-home_ex/take-home_ex01/take-home_ex01)
+-   [Take-home exercise 1](https://isss608-ay2024-25apr.netlify.app/th_ex/th_ex1)

@@ -3,7 +3,10 @@ title: "Hands-on Exercise 4 (a) : <br> Visualising Distribution"
 description: ""
 date: "2025-05-08"
 # date-modified: ""
-format: html
+format: 
+  html:
+    code-fold: true
+    code-summary: "Click to view code"
 editor: visual
 author: "Li Jianyi"
 execute:
@@ -13,17 +16,6 @@ execute:
   freeze: true
 ---
 
-<!-- ::: {.callout-note} -->
-
-<!-- ```{r} -->
-
-<!-- #| code-fold: false -->
-
-<!-- #| code-summary: "Click to view code" -->
-
-<!-- ``` -->
-
-<!-- ::: -->
 
 <br> <br>
 

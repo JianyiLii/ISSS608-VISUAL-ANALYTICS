@@ -3,7 +3,10 @@ title: "Hands-on Exercise 2 : <br> 2  Beyond ggplot2 Fundamentals"
 description: ""
 date: "2025-04-24"
 date-modified: "2025-05-01"
-format: html
+format: 
+  html:
+    code-fold: true
+    code-summary: "Click to view code"
 editor: visual
 # author: "Li Jianyi"
 execute:

@@ -3,7 +3,10 @@ title: "Take-home Exercise 1 - Phrase 1: <br>Singapore Residents by Planning Are
 description: ""
 date: "2025-05-01"
 # date-modified: ""
-format: html
+format: 
+  html:
+    code-fold: true
+    code-summary: "Click to view code"
 editor: visual
 author: "Li Jianyi"
 execute:
@@ -13,9 +16,6 @@ execute:
   freeze: true
 ---
 
-<!-- #| code-fold: false -->
-
-<!-- #| code-summary: "Click to view code" -->
 
 <br> <br>
 
