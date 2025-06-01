@@ -41,12 +41,18 @@ website:
             href: "https://public.tableau.com/app/profile/jianyi.li/viz/In-classExercise3_17462581267610/In-classExercise3"
           - text: "In-class Exercise 5"
             href: "In-class_Ex/In-class_Ex05/In-class_Ex05.html"
+          - text: "In-class Exercise 6"
+            href: "https://public.tableau.com/app/profile/jianyi.li/viz/In-classExercise6_17480710454870/Visitorarrivalsbycountry2010-2019"
+          - text: "In-class Exercise 7"
+            href: "https://jianyivaa.shinyapps.io/In-class_Ex07/"
       - text: "Take-home Exercise"
         menu:
           - text: "Take-home Exercise 1 - Phrase 1"
             href: "Take-home_Ex/Take-home_Ex01/Take-home_Ex01a.html"
           - text: "Take-home Exercise 1 - Phrase 2"
             href: "Take-home_Ex/Take-home_Ex01/Take-home_Ex01b.html"
+          - text: "Take-home Exercise 2"
+            href: "Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html"
       - text: "Group Project"
         href: "Project/project.html"
 

@@ -1,0 +1,903 @@
+---
+title: "Take-home Exercise 2 : <br> [Mini-Challenge 3](https://vast-challenge.github.io/2025/MC3.html)"
+description: ""
+date: "2025-05-31"
+# date-modified: ""
+format: 
+  html:
+    code-fold: true
+    code-summary: "Click to view code"
+editor: visual
+author: "Li Jianyi"
+execute:
+  eval: true #- Run the code and show the result.
+  echo: true #- Show the code in the output.
+  warning: false
+  freeze: true
+---
+
+<br> <br>
+
+### Introduction
+
+Over the past decade, the community of Oceanus has faced numerous transformations and challenges evolving from its fishing-centric origins. Following major crackdowns on illegal fishing activities, suspects have shifted investments into more regulated sectors such as the ocean tourism industry, resulting in growing tensions. This increased tourism has recently attracted the likes of international pop star Sailor Shift, who announced plans to film a music video on the island.
+
+Clepper Jessen, a former analyst at FishEye and now a seasoned journalist for the Hacklee Herald, has been keenly observing these rising tensions. Recently, he turned his attention towards the temporary closure of Nemo Reef. By listening to radio communications and utilizing his investigative tools, Clepper uncovered a complex web of expedited approvals and secretive logistics. These efforts revealed a story involving high-level Oceanus officials, Sailor Shift’s team, local influential families, and local conservationist group The Green Guardians, pointing towards a story of corruption and manipulation.
+
+### Data Preparation
+
+To begin our investigation, we loaded the essential libraries for data processing and network visualization using the `pacman` package, which simplifies package loading. The following libraries were used:
+
+```{r}
+#| code-fold: False
+pacman::p_load(tidyverse, jsonlite, tidygraph, ggraph, lubridate, kableExtra)
+```
+
+-   `tidyverse`: for data wrangling and manipulation
+-   `jsonlite`: for reading JSON files
+-   `tidygraph` and `ggraph`: for network graph operations and visualization
+-   `lubridate`: for handling temporal variables
+-   `kableExtra`: for optional table rendering
+
+Next, we imported the knowledge graph data provided in JSON format using the fromJSON() function. The file MC3_graph.json was flattened for easier access to nested structures.
+
+```{r}
+#| code-fold: False
+library(jsonlite)
+library(tidyverse)
+library(tidygraph)
+library(ggraph)
+library(lubridate)
+
+graph_data <- fromJSON("data/MC3_release/MC3_graph.json", flatten = TRUE)
+```
+
+The imported graph structure contains two main components:
+
+-   `nodes`: representing entities such as people, vessels, locations, events, etc.
+-   `edges`: representing interactions or communications between these entities.
+
+These were extracted for further cleaning and analysis:
+
+```{r}
+#| code-fold: False
+nodes <- graph_data$nodes
+edges <- graph_data$edges
+```
+
+We examined the column names of both nodes and edges using:
+
+```{r}
+#| code-fold: False
+colnames(nodes)
+colnames(edges)
+```
+
+This helped us understand the data schema, which guided all subsequent filtering and analysis procedures.
+
+To ensure compatibility with tidygraph and prevent downstream join issues, we began by ensuring that the `id`, `source`, and `target` fields were of character type. This is important because some of the IDs were stored as integers in the original JSON structure.
+
+```{r}
+#| code-summary: "Click to view code"
+nodes <- nodes %>%
+  mutate(id = as.character(id))  
+
+nodes <- nodes %>%
+  mutate(
+    timestamp = ymd_hms(timestamp, quiet = TRUE),    
+    label = str_trim(label),                        
+    name = str_trim(name)
+  )
+```
+
+We inspected the head and structure of both tables to verify successful transformation
+
+```{r}
+#| echo: false
+#| code-fold: False
+head(nodes)
+glimpse(nodes)
+```
+
+The edges table was also cleaned by: - Converting source and target columns to character type - Reordering columns to have from, to, followed by all other metadata
+
+```{r}
+#| code-summary: "Click to view code"
+edges <- edges %>%
+  mutate(from = as.character(source),
+         to = as.character(target)) %>%
+  select(from, to, everything())
+
+```
+
+```{r}
+#| echo: false
+#| code-fold: False
+head(edges)
+glimpse(edges)
+```
+
+Before building the graph, we needed to ensure that all edges refer to valid nodes. This prevents errors in `tidygraph` when mapping the graph structure.
+
+We revalidated that the `source` and `target` fields in the edge list actually point to existing node IDs. Invalid references were counted to confirm zero mismatches:
+
+```{r}
+#| echo: false
+#| code-fold: False
+edges <- edges %>%
+  mutate(source = as.character(source),
+         target = as.character(target))
+```
+
+```{r}
+#| code-fold: False
+invalid_sources <- setdiff(edges$source, nodes$id)
+invalid_targets <- setdiff(edges$target, nodes$id)
+
+length(invalid_sources) 
+length(invalid_targets)  
+```
+
+Only valid edges were kept:
+
+```{r}
+#| code-fold: False
+edges_clean <- edges %>%
+  filter(source %in% nodes$id & target %in% nodes$id)
+```
+
+We converted all node fields to character type for consistency and removed entries with missing IDs. Each node was also assigned a unique row_id to support index-based referencing later:
+
+```{r}
+#| code-summary: "Click to view code"
+nodes_clean <- nodes %>%
+  mutate(across(everything(), as.character)) %>%
+  filter(!is.na(id)) %>%
+  mutate(row_id = row_number())
+```
+
+A mapping table was created to match node id to its corresponding row_id:
+
+```{r}
+#| code-fold: False
+node_index_map <- nodes_clean %>% select(id, row_id)
+```
+
+Since tbl_graph() uses row indices to define edges, we remapped source and target fields to their respective row_id values:
+
+```{r}
+#| code-summary: "Click to view code"
+edges_clean <- edges %>%
+  filter(source %in% node_index_map$id & target %in% node_index_map$id) %>%
+  left_join(node_index_map, by = c("source" = "id")) %>%
+  rename(source_row = row_id) %>%
+  left_join(node_index_map, by = c("target" = "id")) %>%
+  rename(target_row = row_id) %>%
+  filter(!is.na(source_row) & !is.na(target_row)) %>%
+  select(source = source_row, target = target_row)
+```
+
+With valid and indexed nodes and edges, we constructed the directed graph:
+
+```{r}
+#| code-fold: False
+graph_tbl <- tbl_graph(nodes = nodes_clean, edges = edges_clean, directed = TRUE)
+```
+
+This `graph_tbl` object serves as the central input for all subsequent visual analytics.
+
+We used `activate()` from the tidygraph package to preview the top entries for both:
+
+```{r}
+#| code-summary: "Click to view code"
+#| eval: false
+graph_tbl %>%
+  activate(nodes) %>%
+  head()
+
+graph_tbl %>%
+  activate(edges) %>%
+  head()
+```
+
+This ensured the graph contained meaningful entities and properly indexed connections between them.
+
+To understand the diversity of entities in the knowledge graph, we tabulated the counts of node type and sub_type:
+
+```{r}
+#| code-summary: "Click to view code"
+graph_tbl %>%
+  activate(nodes) %>%
+  as_tibble() %>%
+  count(type, sub_type) 
+```
+
+This helped identify how many nodes belong to categories such as Person, Vessel, Organization, or Communication. These types play important roles later in community detection, pseudonym mapping, and influence tracking.
+
+To assess communication density and potential central hubs, we reviewed edge volume and structure:
+
+```{r}
+#| code-summary: "Click to view code"
+graph_tbl %>%
+  activate(edges) %>%
+  as_tibble() %>%
+  count()
+
+graph_tbl %>%
+  activate(edges) %>%
+  as_tibble() %>%
+  glimpse()
+
+```
+
+### Task 1: Temporal Patterns of Communication
+
+From October 1 to October 15, our goal is to investigate daily temporal patterns in communication behavior. This will assist Clepper Jessen, the journalist, in identifying whether messages were broadcast deliberately and whether communication patterns change over the two-week window. Specifically, we aim to:
+
+-   Identify peak hours of communication each day.
+-   Detect if those patterns shift over time.
+-   Later, zoom into a specific entity to understand their interactions and influence.
+
+We began by filtering the knowledge graph to isolate all nodes labeled as Communication events. These nodes represent intercepted radio messages. From these, we extracted:
+
+-   Unique ID of each message node
+-   The timestamp of communication
+-   Message content
+
+```{r}
+#| code-summary: "Click to view code"
+comm_nodes <- graph_tbl %>%
+  activate(nodes) %>%
+  as_tibble() %>%
+  filter(sub_type == "Communication") %>%
+  select(id, timestamp, content) %>%
+  mutate(timestamp = ymd_hms(timestamp))
+```
+
+To analyze message frequency over time, we derived both `date` and `hour` from the timestamp field using `lubridate`:
+
+```{r}
+#| code-summary: "Click to view code"
+comm_times <- comm_nodes %>%
+  mutate(
+    date = as_date(timestamp),
+    hour = hour(timestamp)
+  )
+
+```
+
+To detect daily communication rhythm, we aggregated the count of intercepted communications by hour of day and date. This helps reveal whether communications follow a fixed schedule, and whether the intensity varies across days.
+
+```{r}
+#| code-summary: "Click to view code"
+library(ggplot2)
+library(plotly)
+library(lubridate)
+library(dplyr)
+
+comm_times <- comm_nodes %>%
+  mutate(
+    date = as_date(timestamp),
+    hour = hour(timestamp)
+  )
+
+hourly_summary <- comm_times %>%
+  count(date, hour)
+```
+
+::: panel-tabset
+## Heatmap
+
+Using ggplot2, we built a `heatmap` showing the number of communications at each hour per day. Darker color intensity indicates higher message volume. The visualization is made interactive via `plotly::ggplotly()`.
+
+```{r}
+#| code-summary: "Click to view code"
+p1 <- ggplot(hourly_summary, aes(x = hour, y = date, fill = n,
+                                  text = paste("Date:", date,
+                                               "<br>Hour:", hour,
+                                               "<br>Count:", n))) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(low = "lightyellow", high = "red") +
+  labs(
+    title = "Hourly Communication Pattern by Day",
+    x = "Hour of Day",
+    y = "Date",
+    fill = "Message Count"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+ggplotly(p1, tooltip = "text")
+
+```
+
+::: {.callout-note title="Insight"}
+The heatmap clearly shows recurring communication bursts between 10:00–14:00 UTC across most days, suggesting a pattern of scheduled or strategic communication. These bursts may represent coordination or planning efforts, and warrant deeper investigation.
+:::
+
+## line chart
+
+After summarizing all communication messages by day, we plotted a line chart to show the overall activity trend from October 1 to 15.
+
+```{r}
+#| code-summary: "Click to view code"
+daily_comm <- comm_times %>%
+  count(date)
+
+peak_day <- daily_comm %>% filter(n == max(n))
+
+p2 <- ggplot(daily_comm, aes(x = date, y = n,
+                             text = paste("Date:", date,
+                                          "<br>Messages:", n))) +
+  geom_line(aes(group = 1), color = "darkgreen", size = 1.2) +
+  geom_point(color = "orange", size = 2) +
+  geom_text(
+    data = peak_day,
+    aes(label = paste0("Peak: ", n)),
+    color = "red",
+    nudge_y = 2,
+    fontface = "bold"
+  ) +
+  labs(
+    title = "Total Number of Communications Per Day",
+    x = "Date", y = "Number of Messages"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+ggplotly(p2, tooltip = "text")
+```
+
+::: {.callout-note title="Insight"}
+The timeline clearly highlights a spike in communication volume on October 10, which stands out from the rest of the observation period. This peak may suggest planned coordination efforts, requiring further investigation into message content and participants involved on that day.
+:::
+
+## Clepper Jensen
+
+To support Clepper's investigation, we examined the daily communication activity pattern of Clepper Jensen, a journalist who may be involved in or monitoring ongoing events. This section helps us understand who interacts with Clepper, when, and whether there are communication bursts involving him.
+
+We first filtered out all nodes classified as Person, removing any entries without a name to ensure clean identification.
+
+```{r}
+#| code-summary: "Click to view code"
+nodes %>%
+  filter(sub_type == "Person", !is.na(name)) %>%
+  select(id, name) %>%
+  distinct() %>%
+  slice_head(n = 20)
+```
+
+We then extracted all communication events where Clepper was either the sender (source) or the recipient (target). These IDs represent all communication nodes Clepper directly participated in.
+
+```{r}
+#| code-fold: False
+person_id <- "Clepper Jensen"
+```
+
+These IDs will be used in the next steps to filter relevant communication content and build a temporal activity profile for Clepper Jensen.
+
+```{r}
+#| echo: false
+#| code-fold: False
+comm_ids_from <- edges %>%
+  filter(source == person_id) %>%
+  pull(target)
+
+comm_ids_to <- edges %>%
+  filter(target == person_id) %>%
+  pull(source)
+
+comm_ids <- union(comm_ids_from, comm_ids_to)
+```
+
+From all communication-type nodes, we filtered only those whose IDs matched the list of communication events Clepper Jensen was involved in. This allowed us to retrieve the exact timestamp of each interaction, which was then decomposed into date and hour components for temporal analysis.
+
+```{r}
+#| echo: False
+#| code-fold: False
+person_comm <- nodes %>%
+  filter(id %in% comm_ids & sub_type == "Communication") %>%
+  mutate(
+    timestamp = ymd_hms(timestamp),
+    date = as_date(timestamp),
+    hour = hour(timestamp)
+  )
+```
+
+To understand how active Clepper was on each day, we plotted the total number of communications per day using a simple line chart.
+
+```{r}
+#| code-summary: "Click to view code"
+person_comm %>%
+  count(date) %>%
+  ggplot(aes(x = date, y = n)) +
+  geom_line(color = "steelblue", size = 1.2) +
+  geom_point(color = "orange", size = 2) +
+  labs(
+    title = "Clepper Jensen's Communication Frequency by Day",
+    x = "Date", y = "Number of Messages"
+  ) +
+  theme_minimal()
+```
+
+This plot provides a clear temporal footprint of Clepper’s communication activities. Peaks in the graph may indicate dates of notable interactions, information gathering, or coordination events.
+
+To uncover any hour-of-day regularity, we further grouped Clepper’s communication events by both date and hour and visualized them using a heatmap.
+
+```{r}
+#| code-summary: "Click to view code"
+person_comm %>%
+  count(date, hour) %>%
+  ggplot(aes(x = hour, y = date, fill = n)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(low = "lightyellow", high = "red") +
+  labs(
+    title = "Clepper Jensen's Hourly Communication Heatmap",
+    x = "Hour", y = "Date", fill = "Messages"
+  ) +
+  theme_minimal()
+```
+
+This visualization helps identify whether Clepper has routine windows for communication, and if specific days show heightened intensity. Though message counts per hour may be relatively sparse, any repeating patterns or outliers are visually distinguishable here.
+:::
+
+### Task 2: Analyzing Interactions Between Entities
+
+To assist Clepper Jessen in uncovering potential information gatekeepers and influential entities in Oceanus, we analyzed the entity-to-entity interaction network. This section focuses on understanding who interacts with whom, how frequently these interactions occur, and whether tightly-knit communities exist.
+
+-   Reveal which entities interact most frequently
+-   Identify clusters or potential community structures
+-   Detect influential nodes based on centrality
+-   Support further investigations into alias usage or illicit coordination
+
+We first filtered the edges to retain only those that connect valid nodes, ensuring no dangling links break the graph:
+
+```{r}
+#| code-fold: False
+edges_clean <- edges %>%
+  filter(source %in% nodes$id & target %in% nodes$id)
+```
+
+Then, we used the ggraph package to build the entity relationship graph. The layout is based on the Fruchterman-Reingold force-directed algorithm, offering an organic layout that highlights clusters and connectivity patterns.
+
+```{r}
+#| code-summary: "Click to view code"
+ggraph(graph_tbl, layout = "fr") +  # fr = Fruchterman-Reingold 
+  geom_edge_link(alpha = 0.2) +
+  geom_node_point(aes(color = sub_type), size = 3) +
+  geom_node_text(aes(label = name), repel = TRUE, size = 3, vjust = 1.5) +
+  theme_void() +
+  labs(title = "Clusters and Network Diagram")
+```
+
+Node color represents the sub-type, while labels show the entity’s name or alias.
+
+To sharpen the analysis and remove noise from the original full-graph, we applied a filtering strategy to retain only the most relevant node types: Person, Communication, Vessel, Suspicious, and Organization These categories are highly indicative of the kinds of actors Clepper is interested in — individuals, vessel operations, and potential illicit activity.
+
+```{r}
+#| code-summary: "Click to view code"
+focus_nodes <- nodes %>%
+  filter(sub_type %in% c("Person", "Communication", "Vessel", "Suspicious", "Organization")) %>%
+  mutate(id = as.character(id),
+         row_id = row_number())
+
+map_tbl <- focus_nodes %>% select(id, row_id)
+
+focus_edges <- edges_clean %>%
+  mutate(source = as.character(source),
+         target = as.character(target)) %>%
+  filter(source %in% map_tbl$id & target %in% map_tbl$id) %>%
+  select(source, target) %>%  
+  left_join(map_tbl, by = c("source" = "id")) %>%
+  rename(from = row_id) %>%
+  left_join(map_tbl, by = c("target" = "id")) %>%
+  rename(to = row_id) %>%
+  filter(!is.na(from), !is.na(to)) %>%
+  select(from, to)
+
+focus_graph <- tbl_graph(nodes = focus_nodes, edges = focus_edges, directed = TRUE)
+
+```
+
+We filtered the graph to include only key entities and valid connections, then remapped node IDs to ensure compatibility and built a cleaner, more focused network for clearer analysis.
+
+::: panel-tabset
+## Version 1
+
+```{r}
+#| code-summary: "Click to view code"
+ggraph(focus_graph, layout = "fr") +
+  geom_edge_link(alpha = 0.15) +
+  geom_node_point(aes(color = sub_type), size = 2.5) +
+  geom_node_text(aes(label = name), size = 2.2, color = "black", repel = FALSE) + 
+  theme_void() +
+  labs(title = "Person + Communication + Vessel + Suspicious + Organization")
+```
+
+The simplified network reveals tightly connected clusters around key individuals, helping to highlight potential influence structures and patterns of communication within the selected entity types.
+
+## Version 2
+
+```{r, fig.width=12, fig.height=10}
+#| code-summary: "Click to view code"
+ggraph(focus_graph, layout = "kk") +
+  geom_edge_link(alpha = 0.15) +
+  geom_node_point(aes(color = sub_type), size = 2.5) +
+  geom_node_text(aes(label = name), size = 2.5, color = "black", repel = FALSE) +  
+  theme_void() +
+  labs(title = "Person + Communication + Vessel + Suspicious + Organization")
+```
+
+## Enhanced Version 3
+
+```{r}
+#| code-summary: "Click to view code"
+library(visNetwork)
+
+vis_nodes <- focus_nodes %>%
+  transmute(id = row_id,        
+            label = name,       
+            group = sub_type)   
+
+vis_edges <- focus_edges %>%
+  select(from, to)
+
+visNetwork(vis_nodes, vis_edges) %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visEdges(arrows = "to",
+           smooth = list(enabled = TRUE, type = "curvedCW")) %>%
+  visLegend() %>%
+  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
+  visLayout(randomSeed = 123)
+```
+:::
+
+To uncover the most influential nodes in the network, we computed three centrality measures: degree, betweenness, and closeness. These metrics help reveal who connects to the most others, who bridges different parts of the graph, and who reaches others fastest.
+
+```{r}
+#| code-summary: "Click to view code"
+focus_graph <- focus_graph %>%
+  mutate(
+    degree = centrality_degree(),
+    betweenness = centrality_betweenness(),
+    closeness = centrality_closeness()
+  )
+```
+
+We focused on nodes of type "Person" and ranked them by degree centrality. The top 10 individuals identified are likely to be central figures in the Oceanus communications network.
+
+These names are of high interest to Clepper, as they may be organizing or coordinating key information flows behind the scenes.
+
+```{r}
+#| code-summary: "Click to view code"
+focus_graph %>%
+  activate(nodes) %>%
+  as_tibble() %>%
+  filter(sub_type == "Person") %>%
+  arrange(desc(degree)) %>%
+  slice_head(n = 10)
+```
+
+To highlight influential entities, we transformed the network into an interactive graph where node size reflects degree centrality and color indicates sub-type. Hovering over a node reveals both degree and betweenness scores.
+
+This view lets us explore who sits at the core of communication and how they’re connected across groups like "Person", "Vessel", or "Suspicious". Nodes such as The Lookout and Boss stand out prominently, suggesting they may coordinate or monitor key flows of information.
+
+::: panel-tabset
+## 1
+
+```{r}
+#| code-summary: "Click to view code"
+vis_nodes <- focus_graph %>%
+  activate(nodes) %>%
+  as_tibble() %>%
+  mutate(
+    label = ifelse(is.na(name) | name == "", id, name),
+    title = paste0(
+      "<b>", label, "</b><br>",
+      "Degree: ", round(degree, 2), "<br>",
+      "Betweenness: ", round(betweenness, 2)
+    )
+  ) %>%
+  select(id = row_id, label, group = sub_type, value = degree, title)
+
+
+vis_edges <- focus_graph %>%
+  activate(edges) %>%
+  as_tibble() %>%
+  select(from, to)
+
+
+visNetwork(vis_nodes, vis_edges, height = "500px", width = "100%") %>%
+  visNodes(
+    scaling = list(min = 10, max = 50)
+  ) %>%
+  visEdges(arrows = "to", smooth = list(enabled = TRUE, type = "curvedCW")) %>%
+  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
+  visIgraphLayout(layout = "layout_with_fr") %>%
+  visLegend() %>%
+  visLayout(randomSeed = 123)
+```
+
+## 2
+
+```{r}
+#| code-summary: "Click to view code"
+library(visNetwork)
+
+visNetwork(vis_nodes, vis_edges, height = "600px", width = "100%") %>%
+  visNodes(
+    scaling = list(min = 10, max = 50),
+    font = list(size = 20, face = "arial"),
+    shadow = TRUE
+  ) %>%
+  visEdges(
+    arrows = "to",
+    smooth = list(enabled = TRUE, type = "curvedCW"),
+    color = list(color = "#97C2FC", highlight = "#FF8000")
+  ) %>%
+  visOptions(
+    highlightNearest = list(enabled = TRUE, hover = TRUE, degree = 1),
+    nodesIdSelection = TRUE,
+    selectedBy = "group",
+    clickToUse = TRUE
+  ) %>%
+  visPhysics(
+    enabled = TRUE,
+    solver = "forceAtlas2Based",
+    stabilization = FALSE
+  )
+```
+:::
+
+### Task 3: Anomaly Detection of Communication Behavior
+
+I filtered all Communication nodes sent or received by key_people, and counted how many communications occurred per person per day.
+
+```{r}
+#| code-summary: "Click to view code"
+key_people <- c(
+  "Clepper Jensen", "Mako", "Miranda Jordan", "Nadia Conti", 
+  "Boss", "Samantha Blake", "Rodriguez", "Kelly", "Davis","Sam"
+)
+
+edges_filtered <- edges %>%
+  filter(from %in% key_people | to %in% key_people)
+
+daily_counts <- nodes %>%
+  filter(sub_type == "Communication", id %in% comm_ids) %>%
+  select(id, timestamp) %>%
+  mutate(date = as.Date(ymd_hms(timestamp))) %>%
+  left_join(edges_filtered, by = c("id" = "to")) %>%
+  mutate(person = ifelse(from %in% key_people, from, to)) %>%
+  count(person, date, name = "messages")
+```
+
+Using Plotly, I created a line plot to explore unusual message surges by individual.
+
+```{r}
+#| code-summary: "Click to view code"
+plot_ly(daily_counts,
+  x = ~date, y = ~messages,
+  type = 'scatter', mode = 'lines+markers',
+  color = ~person,
+  text = ~paste("Date:", date, "<br>Messages:", messages),
+  hoverinfo = 'text'
+) %>%
+layout(
+  title = "Key People Daily Communication Trend",
+  xaxis = list(title = "Date"),
+  yaxis = list(title = "Message Count")
+)
+```
+
+From the interactive plot, several individuals showed noticeable peaks on specific dates. This pattern may indicate planned coordination or response to sensitive events.
+
+```{r}
+#| code-summary: "Click to view code"
+library(dplyr)
+
+daily_count <- daily_counts %>%
+  group_by(person) %>%
+  mutate(z = scale(messages)) %>%
+  ungroup()
+
+daily_count %>%
+  filter(z > 1) %>%
+  arrange(desc(z))
+```
+
+```{r}
+#| code-summary: "Click to view code"
+comm_nodes <- comm_nodes %>%
+  mutate(date = as.Date(timestamp))
+
+key_date <- as.Date("2040-10-11")
+
+```
+
+```{r}
+#| code-summary: "Click to view code"
+library(DT)
+
+comm_nodes %>%
+  filter(date == key_date, id %in% comm_ids) %>%
+  select(timestamp, content) %>%
+  mutate(timestamp = format(
+    as.POSIXct(timestamp, format = "%Y-%m-%dT%H:%M:%OSZ", tz = "UTC"), 
+    "%Y-%m-%d %H:%M:%S")) %>%
+  arrange(timestamp) %>%
+  datatable(
+    caption = paste("Date of", key_date),
+    options = list(pageLength = 5, autoWidth = TRUE)
+  )
+```
+
+### Task 4 – Investigate One Suspicious Day’s Communications
+
+This task focuses on examining what happened on the day with unusual activity—specifically for Nadia Conti. The aim is to retrieve her conversations and prepare to infer intent or link networks.
+
+We pull the to and from communication node IDs Nadia is involved with and ensure they are unique. We filter all communication nodes linked to Nadia, and convert the timestamp to date + hour format. We also add a content_length field to analyze volume.
+
+```{r}
+#| code-summary: "Click to view code"
+person_id <- "Nadia Conti"
+
+nadia_edges <- edges %>%
+  filter(from == "Nadia Conti" | to == "Nadia Conti")
+
+nadia_comm_ids <- unique(
+  c(
+    nadia_edges$to[which(nadia_edges$from == "Nadia Conti")],
+    nadia_edges$from[which(nadia_edges$to == "Nadia Conti")]
+  )
+)
+
+nadia_comms <- nodes %>%
+  filter(id %in% nadia_comm_ids, sub_type == "Communication") %>%
+  mutate(
+    timestamp = ymd_hms(timestamp),
+    date = as.Date(timestamp),
+    hour = hour(timestamp),
+    content_length = nchar(content)
+  ) %>%
+  arrange(timestamp)
+```
+
+We standardize the contact by setting the opposite party in each edge (not Nadia or comm node ID) into a person column. This ensures we identify actual people Nadia communicated with. We count who appeared most frequently as Nadia’s counterpart in the communications.
+
+```{r}
+#| code-summary: "Click to view code"
+nadia_related_edges <- edges %>%
+  filter(source %in% nadia_comm_ids | target %in% nadia_comm_ids)
+
+nadia_contacts <- nadia_related_edges %>%
+  mutate(person = ifelse(source == "Nadia Conti", target,
+                         ifelse(target == "Nadia Conti", source,
+                                ifelse(source %in% nadia_comm_ids, target, source)))) %>%
+  filter(person != "Nadia Conti", !person %in% nadia_comm_ids)
+
+top_contacts <- nadia_contacts %>%
+  count(person, sort = TRUE)
+
+head(top_contacts)
+
+```
+
+We reuse the related edges but now identify all distinct people Nadia communicated with, excluding any Communication nodes and Nadia herself. We use the edge direction to determine the true person. we visualize the top 10 people Nadia communicated with, using a horizontal bar chart.
+
+```{r}
+#| code-summary: "Click to view code"
+nadia_related_edges <- edges %>%
+  filter(source %in% nadia_comm_ids | target %in% nadia_comm_ids)
+
+nadia_contacts_ids <- nadia_related_edges %>%
+  mutate(person_id = ifelse(source %in% nadia_comm_ids, target, source)) %>%
+  filter(!person_id %in% nadia_comm_ids, person_id != "Nadia Conti") %>%
+  count(person_id, sort = TRUE)
+
+top_contacts_named <- nadia_contacts_ids %>%
+  left_join(nodes %>% filter(sub_type == "Person") %>% select(id, name), by = c("person_id" = "id")) %>%
+  filter(!is.na(name))
+
+library(ggplot2)
+
+top_contacts_named %>%
+  slice_max(n, n = 10) %>%
+  ggplot(aes(x = reorder(name, n), y = n)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(title = "Nadia Conti's Top communicator",
+       x = "contact person", y = "number of message") +
+  theme_minimal()
+```
+
+We now narrow our attention to Nadia’s actual messages with her top contacts to review content and timing. This step checks all edges linked to Nadia and her top communicators to get the related Communication node IDs.
+
+```{r}
+#| code-summary: "Click to view code"
+top_contact_comm_ids <- edges_clean %>%
+  filter(
+    (source %in% nadia_comm_ids & target %in% top_contacts_named$person_id) |
+    (target %in% nadia_comm_ids & source %in% top_contacts_named$person_id)
+  ) %>%
+  mutate(comm_id = ifelse(source %in% nadia_comm_ids, source, target)) %>%
+  pull(comm_id) %>%
+  unique()
+
+
+nadia_messages <- comm_nodes %>%
+  filter(id %in% top_contact_comm_ids) %>%
+  select(timestamp, content) %>%
+  mutate(timestamp = format(
+    as.POSIXct(timestamp, format = "%Y-%m-%dT%H:%M:%OSZ", tz = "UTC"), 
+    "%Y-%m-%d %H:%M:%S")) %>%
+  arrange(timestamp)
+
+
+DT::datatable(
+  nadia_messages,
+  options = list(
+    pageLength = 5,
+    autoWidth = TRUE,
+    scrollX = TRUE,       
+    initComplete = htmlwidgets::JS(
+      "function(settings, json) {",
+      "$(this.api().table().header()).css({'background-color': '#f8f9fa', 'color': '#333'});",
+      "}"
+    )
+  ),
+  rownames = FALSE,
+  class = 'stripe hover compact',   
+  caption = htmltools::tags$caption(
+    style = 'caption-side: top; text-align: left; font-size:16px; color:#444;',
+    '📩 Nadia Conti – Messages with Top Contacts'
+  )
+)
+
+
+```
+
+### Summary
+
+::: {.callout-note title="Key Findings"} 
+
+## Task 1:
+
+-   Analysis shows that messages across the island are frequently concentrated between 9 AM and 2 PM, especially from Oct 2 to Oct 10. There are visible spikes on some days, with activity peaking sharply mid-week.
+
+-   While Oct 1–3 had moderate activity, a rising trend appears between Oct 4–8, likely linked to organizing suspicious or sensitive operations. Activity gradually tapers off after Oct 12.
+
+## Task 2:
+
+-   Through network visualizations, we identify tightly connected clusters of Persons, Organizations, and Vessels. Clepper, Rodriguez, Boss, Kelly, and Samantha Blake are central communicators.
+
+-   A Vessel & Suspicious Movement cluster, likely linked to covert operations.
+
+-   Using degree and betweenness centrality, the most central individuals are:
+
+1.  The Lookout (highest degree)
+2.  Davis
+3.  Rodriguez
+4.  Clepper Jensen
+
+They act as bridges between multiple groups and are likely coordinating multiple sides.
+
+## Task 3:
+
+-   A clear anomaly was detected on Oct 12, with Rodriguez showing a communication spike far above their norm.
+
+-   The spike relates to communication with security and movement orders involving permit #CR-7844 and Nadia.
+
+## Task 4:
+
+-   Nadia communication on Oct 12 is connected to: Security reallocation orders to V. Miesel Shipping Permit CR-7844 A nighttime meeting to "finalize documentation"
+
+-   Messages from Davis to Nadia suggest internal coordination of sensitive logistics. It also references security movement timing (0600 tomorrow) — implying deliberate, secret planning.
+
+:::
