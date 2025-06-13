@@ -7,6 +7,7 @@ format:
   html:
     code-fold: true
     code-summary: "Click to view code"
+    # prefer-html: true
 editor: visual
 author: "Li Jianyi"
 execute:
@@ -471,7 +472,7 @@ Then, we used the ggraph package to build the entity relationship graph. The lay
 ggraph(graph_tbl, layout = "fr") +  # fr = Fruchterman-Reingold 
   geom_edge_link(alpha = 0.2) +
   geom_node_point(aes(color = sub_type), size = 3) +
-  geom_node_text(aes(label = name), repel = TRUE, size = 3, vjust = 1.5) +
+  geom_node_text(aes(label = name), max.overlaps = Inf, size = 3, vjust = 1.5) +
   theme_void() +
   labs(title = "Clusters and Network Diagram")
 ```
@@ -515,7 +516,7 @@ We filtered the graph to include only key entities and valid connections, then r
 ggraph(focus_graph, layout = "fr") +
   geom_edge_link(alpha = 0.15) +
   geom_node_point(aes(color = sub_type), size = 2.5) +
-  geom_node_text(aes(label = name), size = 2.2, color = "black", repel = FALSE) + 
+  geom_node_text(aes(label = name), size = 2.2, color = "black", max.overlaps = Inf) + 
   theme_void() +
   labs(title = "Person + Communication + Vessel + Suspicious + Organization")
 ```
@@ -529,7 +530,7 @@ The simplified network reveals tightly connected clusters around key individuals
 ggraph(focus_graph, layout = "kk") +
   geom_edge_link(alpha = 0.15) +
   geom_node_point(aes(color = sub_type), size = 2.5) +
-  geom_node_text(aes(label = name), size = 2.5, color = "black", repel = FALSE) +  
+  geom_node_text(aes(label = name), size = 2.5, color = "black",  max.overlaps = Inf) +  
   theme_void() +
   labs(title = "Person + Communication + Vessel + Suspicious + Organization")
 ```
