@@ -866,8 +866,7 @@ DT::datatable(
 
 ### Summary
 
-::: {.callout-note title="Key Findings"} 
-
+::: {.callout-note title="Key Findings"}
 ## Task 1:
 
 -   Analysis shows that messages across the island are frequently concentrated between 9 AM and 2 PM, especially from Oct 2 to Oct 10. There are visible spikes on some days, with activity peaking sharply mid-week.
@@ -900,5 +899,4 @@ They act as bridges between multiple groups and are likely coordinating multiple
 -   Nadia communication on Oct 12 is connected to: Security reallocation orders to V. Miesel Shipping Permit CR-7844 A nighttime meeting to "finalize documentation"
 
 -   Messages from Davis to Nadia suggest internal coordination of sensitive logistics. It also references security movement timing (0600 tomorrow) — implying deliberate, secret planning.
-
 :::

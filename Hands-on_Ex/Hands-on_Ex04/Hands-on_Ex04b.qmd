@@ -186,10 +186,3 @@ ggbarstats(exam1,
            y = GENDER)
 ```
 
-```{r}
-#| code-fold: false
-#| eval: false
-#| echo: false
-renderthis::to_pdf(from = "https://r4va.netlify.app/chap09.html",
-                   to = "D://ISSS608_AY2022-23Apr/20-r4va/chap09.pdf")
-```

@@ -16,7 +16,6 @@ execute:
   freeze: true
 ---
 
-
 <br> <br>
 
 ## Learning Outcome
@@ -507,12 +506,5 @@ ggplot(exam,
 -   Allen M, Poggiali D, Whitaker K et al. [“Raincloud plots: a multi-platform tool for robust data. visualization”](https://wellcomeopenresearch.org/articles/4-63) \[version 2; peer review: 2 approved\]. Welcome Open Res 2021, pp. 4:63.
 -   [Dots + interval stats and geoms](https://mjskay.github.io/ggdist/articles/dotsinterval.html)
 
-```{r}
-#| code-fold: false
-#| eval: false
-#| echo: false
-renderthis::to_pdf(from = "https://r4va.netlify.app/chap10.html",
-                   to = "D://ISSS608_AY2022-23Apr/20-r4va/chap10.pdf")
-```
 
 A funnel plot object with 267 points of which 1 are outliers. Plot is adjusted for overdispersion.

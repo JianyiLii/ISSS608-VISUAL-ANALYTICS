@@ -18,7 +18,6 @@ execute:
 
 <br> <br>
 
-
 ## Overview
 
 ### Objectives
@@ -385,9 +384,3 @@ tmap_mode("plot")
 boxmap("wp_nonfunctional", NGA_wp)
 ```
 
-```{r}
-#| echo: false
-#| eval: false
-renderthis::to_pdf(from = "https://r4va.netlify.app/chap23.html",
-                   to = "D://ISSS608_AY2022-23Apr/20-r4va/chap23.pdf")
-```

@@ -39,6 +39,16 @@ website:
             href: "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08b.html"
           - text: "Hands-on Exercise 8(c)"
             href: "Hands-on_Ex/Hands-on_Ex08/Hands-on_Ex08c.html"
+          - text: "Hands-on Exercise 9(a)"
+            href: "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09a.html"
+          - text: "Hands-on Exercise 9(b)"
+            href: "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09b.html"
+          - text: "Hands-on Exercise 9(c)"
+            href: "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09c.html"
+          - text: "Hands-on Exercise 9(d)"
+            href: "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09d.html"
+          - text: "Hands-on Exercise 9(e)"
+            href: "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09e.html"
       - text: "In-class Exercise"
         menu:
           - text: "In-class Exercise 2"
@@ -51,6 +61,10 @@ website:
             href: "https://public.tableau.com/app/profile/jianyi.li/viz/In-classExercise6_17480710454870/Visitorarrivalsbycountry2010-2019"
           - text: "In-class Exercise 7"
             href: "https://jianyivaa.shinyapps.io/In-class_Ex07/"
+          - text: "In-class Exercise 8(a)"
+            href: "https://public.tableau.com/app/profile/jianyi.li/viz/In-classExercise8a/Dashboard1"
+          - text: "In-class Exercise 8(b)"
+            href: "https://public.tableau.com/app/profile/jianyi.li/viz/In-classExercise8b/Dashboard1"
       - text: "Take-home Exercise"
         menu:
           - text: "Take-home Exercise 1 - Phrase 1"
@@ -59,8 +73,10 @@ website:
             href: "Take-home_Ex/Take-home_Ex01/Take-home_Ex01b.html"
           - text: "Take-home Exercise 2"
             href: "Take-home_Ex/Take-home_Ex02/Take-home_Ex02.html"
+          - text: "Take-home Exercise 3"
+            href: "Take-home_Ex/Take-home_Ex03/Take-home_Ex03.html"
       - text: "Group Project"
-        href: "Project/project.html"
+        href: "https://covertreef.netlify.app/"
 
     right:
       - icon: house

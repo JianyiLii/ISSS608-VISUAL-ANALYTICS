@@ -18,7 +18,6 @@ execute:
 
 <br> <br>
 
-
 ## Learning Outcome
 
 By the end of this hands-on exercise you will be able create the followings data visualisation by using R packages:

@@ -1,0 +1,19 @@
+---
+title: "Take-Home Exercise 3"
+description: ""
+date: "2025-06-17"
+# date-modified: ""
+format: 
+  html:
+    code-fold: true
+    code-summary: "Click to view code"
+editor: visual
+author: "Li Jianyi"
+execute:
+  eval: true #- Run the code and show the result.
+  echo: true #- Show the code in the output.
+  warning: false
+  freeze: true
+---
+
+<br> <br>
