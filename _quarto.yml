@@ -65,6 +65,10 @@ website:
             href: "https://public.tableau.com/app/profile/jianyi.li/viz/In-classExercise8a/Dashboard1"
           - text: "In-class Exercise 8(b)"
             href: "https://public.tableau.com/app/profile/jianyi.li/viz/In-classExercise8b/Dashboard1"
+          - text: "In-class Exercise 9(a)"
+            href: "https://public.tableau.com/app/profile/jianyi.li/viz/In-classExercise9_17504903134600/SingaporePopulation2024"
+          - text: "In-class Exercise 9(b)"
+            href: "https://public.tableau.com/app/profile/jianyi.li/viz/In-classExercise9b/Dashboard1"
       - text: "Take-home Exercise"
         menu:
           - text: "Take-home Exercise 1 - Phrase 1"

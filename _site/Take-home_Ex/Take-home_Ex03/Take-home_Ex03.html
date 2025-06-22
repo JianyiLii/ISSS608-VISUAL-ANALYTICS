@@ -197,6 +197,14 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="https://public.tableau.com/app/profile/jianyi.li/viz/In-classExercise8b/Dashboard1" rel="" target="">
  <span class="dropdown-text">In-class Exercise 8(b)</span></a>
   </li>  
+        <li>
+    <a class="dropdown-item" href="https://public.tableau.com/app/profile/jianyi.li/viz/In-classExercise9_17504903134600/SingaporePopulation2024" rel="" target="">
+ <span class="dropdown-text">In-class Exercise 9(a)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://public.tableau.com/app/profile/jianyi.li/viz/In-classExercise9b/Dashboard1" rel="" target="">
+ <span class="dropdown-text">In-class Exercise 9(b)</span></a>
+  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -245,7 +253,23 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><strong>Introduction</strong></a></li>
+  <li><a href="#the-task-for-take-home-exercise-3" id="toc-the-task-for-take-home-exercise-3" class="nav-link" data-scroll-target="#the-task-for-take-home-exercise-3"><strong>The Task for Take-Home Exercise 3</strong></a></li>
+  <li><a href="#methodology" id="toc-methodology" class="nav-link" data-scroll-target="#methodology"><strong>Methodology</strong></a></li>
+  <li><a href="#required-r-packages" id="toc-required-r-packages" class="nav-link" data-scroll-target="#required-r-packages"><strong>Required R Packages</strong></a></li>
+  <li><a href="#storyboard-ui-design" id="toc-storyboard-ui-design" class="nav-link" data-scroll-target="#storyboard-ui-design"><strong>Storyboard UI Design</strong></a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"><strong>Section 1</strong></a></li>
+  <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2"><strong>Section 2</strong></a></li>
+  <li><a href="#section-3" id="toc-section-3" class="nav-link" data-scroll-target="#section-3"><strong>Section 3</strong></a></li>
+  <li><a href="#section-4" id="toc-section-4" class="nav-link" data-scroll-target="#section-4"><strong>Section 4</strong></a></li>
+  <li><a href="#section-5" id="toc-section-5" class="nav-link" data-scroll-target="#section-5"><strong>Section 5</strong></a></li>
+  <li><a href="#prototype" id="toc-prototype" class="nav-link" data-scroll-target="#prototype"><strong>Prototype</strong></a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -280,8 +304,521 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 <p><br> <br></p>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction"><strong>Introduction</strong></h3>
+<p>This prototype module is developed as part of Take-home Exercise 3 for the ISSS608 Visual Analytics module. It builds upon the investigative storyline of <a href="https://vast-challenge.github.io/2025/MC3.html">Mini-Challenge 3</a> from <a href="https://vast-challenge.github.io/2025/index.html">VAST Challenge 202</a>, where journalist Clepper Jensen seeks to uncover suspicious behavior and hidden relationships in the Oceanus community.</p>
+<p>Using a knowledge graph constructed from intercepted radio communication data, this module aims to translate insights into a visual analytics prototype using Shiny. The goal is to assist Clepper in identifying patterns in communication behavior, revealing key influencers, and flagging potential anomalies for further investigation.</p>
+<p>This prototype focuses on four analytical perspectives, which were collaboratively developed by my teammates and me. We divided the work across the following tasks:</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Tasks and Questions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tasks and Questions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Clepper diligently recorded all intercepted radio communications over the last two weeks. With the help of his intern, they have analyzed their content to identify important events and relationships between key players. The result is a knowledge graph describing the last two weeks on Oceanus. Clepper and his intern have spent a large amount of time generating this knowledge graph, and they would now like some assistance using it to answer the following questions.</p>
+<ol type="1">
+<li>Clepper found that messages frequently came in at around the same time each day.
+<ol type="a">
+<li>Develop a graph-based visual analytics approach to identify any daily temporal patterns in communications.</li>
+<li>How do these patterns shift over the two weeks of observations?</li>
+<li>Focus on a specific entity and use this information to determine who has influence over them.</li>
+</ol></li>
+<li>Clepper has noticed that people often communicate with (or about) the same people or vessels, and that grouping them together may help with the investigation.
+<ol type="a">
+<li><p>Use visual analytics to help Clepper understand and explore the interactions and relationships between vessels and people in the knowledge graph.</p></li>
+<li><p>Are there groups that are more closely associated? If so, what are the topic areas that are predominant for each group?</p>
+<ul>
+<li>For example, these groupings could be related to: Environmentalism (known associates of Green Guardians), Sailor Shift, and fishing/leisure vessels.</li>
+</ul></li>
+</ol></li>
+<li>It was noted by Clepper’s intern that some people and vessels are using pseudonyms to communicate.
+<ol type="a">
+<li><p>Expanding upon your prior visual analytics, determine who is using pseudonyms to communicate, and what these pseudonyms are.</p>
+<ul>
+<li>Some that Clepper has already identified include: “Boss”, and “The Lookout”, but there appear to be many more.</li>
+<li>To complicate the matter, pseudonyms may be used by multiple people or vessels.</li>
+</ul></li>
+<li><p>Describe how your visualizations make it easier for Clepper to identify common entities in the knowledge graph.</p></li>
+<li><p>How does your understanding of activities change given your understanding of pseudonyms?</p></li>
+</ol></li>
+<li>Clepper suspects that Nadia Conti, who was formerly entangled in an illegal fishing scheme, may have continued illicit activity within Oceanus.
+<ol type="a">
+<li>Through visual analytics, provide evidence that Nadia is, or is not, doing something illegal.</li>
+<li>Summarize Nadia’s actions visually. Are Clepper’s suspicions justified?</li>
+</ol></li>
+</ol>
+</div>
+</div>
+</section>
+<section id="the-task-for-take-home-exercise-3" class="level3">
+<h3 class="anchored" data-anchor-id="the-task-for-take-home-exercise-3"><strong>The Task for Take-Home Exercise 3</strong></h3>
+<p>In this take-home exercise 3, we are required to select one of the module of your proposed Shiny application and complete the following tasks:</p>
+<ul>
+<li><p>To evaluate and determine the necessary R packages needed for your Shiny application are supported in R CRAN,</p></li>
+<li><p>To prepare and test the specific R codes can be run and returned the correct output as expected,</p></li>
+<li><p>To determine the parameters and outputs that will be exposed on the Shiny applications, and</p></li>
+<li><p>To select the appropriate Shiny UI components for exposing the parameters determine above.</p></li>
+<li><p>Include a section called UI design for the different components of the UIs for the proposed design.</p></li>
+<li><p>Prepare the prototype module report as Take-home Exercise 3 submission. The write-up of the take-home exercise must be in Quarto html document format and publish on Netlify on our own coursework page. The report must provide detail discussion and explanation of:</p>
+<ul>
+<li><p>the data preparation process;</p></li>
+<li><p>the selection of data visualisation techniques used; and</p></li>
+<li><p>the data visualisation design and interactivity principles and best practices implemented.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="methodology" class="level3">
+<h3 class="anchored" data-anchor-id="methodology"><strong>Methodology</strong></h3>
+<p>To build this prototype module, we adopted a structured visual analytics approach, starting from data ingestion to visual storytelling. The knowledge graph provided in Mini-Challenge 3 was first cleaned, transformed, and modeled using tidygraph. Communication patterns, relationships, and anomalies were then extracted through modular analysis and visualized using both static (ggplot2, ggraph) and interactive (plotly, visNetwork) tools.</p>
+<p>The overall methodology consists of the following stages:</p>
+<ol type="1">
+<li><p><code>Data Preparation</code> We loaded and flattened the JSON-based knowledge graph, extracted nodes and edges, cleaned missing values, and validated the network structure for compatibility with tidygraph. Each entity was classified by type and sub-type to enable filtering and targeted analysis.</p></li>
+<li><p><code>Modular Task Execution</code> Each of the four investigative tasks was assigned to team member, allowing parallel and comparison development:</p></li>
+</ol>
+<ul>
+<li>Temporal trends were analyzed by aggregating communication timestamps by hour and date.</li>
+<li>Entity relationships were explored through network graph layouts and centrality measures.</li>
+<li>Anomaly detection used Z-score normalization on daily message counts.</li>
+<li>Suspicious activity was investigated through person-to-person messaging analysis.</li>
+</ul>
+<ol start="3" type="1">
+<li><p><code>Prototype Development</code> All modules were translated into reactive components suitable for a Shiny application. Input widgets such as selectInput(), dateRangeInput(), and checkboxGroupInput() allow user-driven filtering, while outputs include plotlyOutput() and visNetworkOutput() for dynamic and exploratory analysis.</p></li>
+<li><p><code>Design and Storyboarding</code> A UI storyboard was drafted to guide the layout of the final Shiny app, ensuring usability and clarity. Each module was built to function independently but integrate smoothly into the full application.</p></li>
+</ol>
+</section>
+<section id="required-r-packages" class="level3">
+<h3 class="anchored" data-anchor-id="required-r-packages"><strong>Required R Packages</strong></h3>
+<p>To develop and deploy this Shiny prototype, a variety of R packages were used for data handling, graph analysis, and visualization. All packages are available on CRAN and have been confirmed to work in Shiny applications.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Utility Tools</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Graphing &amp; Network Tools</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Tidyverse</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="Utility Tools">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Utility Tools
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>jsonlite</code> – To parse JSON graph data.</li>
+<li><code>tidyverse</code> – Core data science tools including dplyr, tidyr, and ggplot2.</li>
+<li><code>gtext</code> – For formatting and annotating text.</li>
+<li><code>knitr</code> – To render tables and enhance report output.</li>
+<li><code>lubridate</code> – For parsing timestamps and managing time-based data.</li>
+<li><code>hms</code> – For representing durations.</li>
+<li><code>scales</code> – For axis formatting and custom label breaks.</li>
+<li><code>tidytext</code> – For text mining preparation.</li>
+<li><code>tm</code> – For classic text mining pipelines.</li>
+<li><code>SnowballC</code> – For stemming in text analysis.</li>
+<li><code>SmartEDA</code> – Exploratory data analysis toolkit.</li>
+<li><code>reactable</code> – For interactive tables.</li>
+<li><code>highcharter</code> – For advanced interactive charting.</li>
+<li><code>conflicted</code> – To manage namespace conflicts between packages.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="Graphing &amp; Network Tools">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Graphing &amp; Network Tools
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>patchwork</code> – For combining ggplot2 visualizations.</li>
+<li><code>ggraph</code> – For static graph visualizations.</li>
+<li><code>tidygraph</code> – For network structure modeling.</li>
+<li><code>igraph</code> – For underlying network analysis functions.</li>
+<li><code>ggiraph</code> – For interactive ggplot outputs.</li>
+<li><code>plotly</code> – For interactive time-series and heatmap plots.</li>
+<li><code>wordcloud</code> – For word frequency cloud visualization.</li>
+<li><code>ggh4x</code> – For extended ggplot axis/facet formatting.</li>
+<li><code>visNetwork</code> – For interactive network graphs.</li>
+<li><code>RColorBrewer</code> – For accessible color schemes.</li>
+<li><code>circlize</code> – For circular visualizations.</li>
+<li><code>ggalluvial</code> – For alluvial flow diagrams.</li>
+<li><code>networkD3</code> – For D3-based interactive network charts.</li>
+<li><code>leaflet</code> – For map-based interactive visuals.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="Tidyverse">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tidyverse
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>stringr</code> – String manipulation.</li>
+<li><code>readr</code> – Efficient reading of CSV/TSV data.</li>
+<li><code>dplyr</code> – Data wrangling.</li>
+<li><code>ggplot2</code> – Core plotting library.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="storyboard-ui-design" class="level3">
+<h3 class="anchored" data-anchor-id="storyboard-ui-design"><strong>Storyboard UI Design</strong></h3>
+<p>Our storyboard is structured into multiple interactive modules, each thoughtfully designed to address a key investigative question arising from the Mini-Challenge 3 scenario. From uncovering temporal communication patterns to analyzing entity relationships, detecting behavioral anomalies, and conducting deep dives into suspicious individuals, each module plays a crucial role in supporting the overall narrative. This modular design not only enables users to explore the dataset from different analytical angles but also allows for progressive storytelling—starting broad with general trends and narrowing down to detailed, individual-level insights.</p>
+</section>
+<section id="section-1" class="level3">
+<h3 class="anchored" data-anchor-id="section-1"><strong>Section 1</strong></h3>
+<p><code>Timeline Patterns: When Are People Communicating?</code></p>
+<p>Reveal communication patterns over time. Detect whether activities are scheduled, bursty, or unusual across dates and hours.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">UI Functions</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">Outputs</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-3" role="tab" aria-controls="tabset-2-3" aria-selected="false">Insights &amp; Flow</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="UI Functions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+UI Functions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>dateRangeInput(“date_range”) – Set observation period</li>
+<li>selectInput(“person_select”) – Focus on a specific person (e.g.&nbsp;Clepper Jensen)</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="Outputs">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Outputs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>plotlyOutput(“heatmap_all”) – Hour-by-day communication heatmap</li>
+<li>plotlyOutput(“daily_trend”) – Line chart of total daily messages</li>
+<li>plotlyOutput(“person_heatmap”) – Heatmap of an individual’s daily behavior</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="Insights &amp; Flow">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insights &amp; Flow
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Users start here to understand the general communication rhythm</li>
+<li>Detect key activity windows like “Oct 10” peak</li>
+<li>Compare general vs.&nbsp;personal trends</li>
+<li>Pinpoint unusual bursts for deeper inspection in later tasks</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="section-2" class="level3">
+<h3 class="anchored" data-anchor-id="section-2"><strong>Section 2</strong></h3>
+<p><code>Entity Network: Who Talks to Whom?</code></p>
+<p>Understand the structure of relationships – identify who is connected, who acts as a bridge, and where clusters form.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">UI Functions</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">Outputs</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-3" role="tab" aria-controls="tabset-3-3" aria-selected="false">Insights &amp; Flow</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="UI Functions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+UI Functions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>checkboxGroupInput(“node_types”) – Filter node types (e.g., Person, Vessel, Organization)</li>
+<li>radioButtons(“layout_type”) – Switch layout between “Fruchterman” and “Kamada-Kawai”</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="Outputs">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Outputs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>plotOutput(“ggraph_network”) – Static network plot with sub-type colors</li>
+<li>visNetworkOutput(“interactive_net”) – Interactive graph with search, highlight, hover</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="Insights &amp; Flow">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insights &amp; Flow
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Users visually explore key actors and the strength of their links</li>
+<li>Clusters expose suspicious tightly connected entities</li>
+<li>Node sizing and color help distinguish roles (e.g., centrality, type)</li>
+<li>Filter by sub-types to examine vessel or suspicious-only subgraphs</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="section-3" class="level3">
+<h3 class="anchored" data-anchor-id="section-3"><strong>Section 3</strong></h3>
+<p><code>Community Clusters: Are There Hidden Groups?</code></p>
+<p>Expose natural communities or cliques through clustering algorithms and sub-type filtering (e.g., vessels tied to covert operations)</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">UI Functions</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Outputs</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-3" role="tab" aria-controls="tabset-4-3" aria-selected="false">Insights &amp; Flow</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="UI Functions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+UI Functions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>selectInput(“cluster_focus”) – Choose clustering method or subgraph theme</li>
+<li>checkboxGroupInput(“subtypes”) – Focus only on specific subtypes (Suspicious, Vessel, etc.)</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="Outputs">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Outputs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>plotOutput(“cluster_plot”) – Color-coded clusters</li>
+<li>Tooltip-based interaction to reveal group role, centrality</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tabset-4-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-3-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="Insights &amp; Flow">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insights &amp; Flow
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Grouping allows storytelling around criminal or covert groups</li>
+<li>Users see hidden structures not obvious from the main network</li>
+<li>Focuses on abnormal cohesion between organizations, vessels, or aliases</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="section-4" class="level3">
+<h3 class="anchored" data-anchor-id="section-4"><strong>Section 4</strong></h3>
+<p><code>Anomaly Detection: Who’s Acting Unusual?</code></p>
+<p>Quantitatively identify individuals showing abnormal behavior through message volume spikes or timing oddities.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">UI Functions</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Outputs</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-3" role="tab" aria-controls="tabset-5-3" aria-selected="false">Insights &amp; Flow</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="UI Functions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+UI Functions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>selectInput(“key_person”) – Pick from pre-defined key people list</li>
+<li>(Optional) sliderInput(“threshold_z”) – Tune Z-score threshold</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="Outputs">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Outputs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>plotlyOutput(“zscore_plot”) – Z-score line chart</li>
+<li>plotlyOutput(“multi_person_trend”) – Overall trends for all key figures</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tabset-5-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-3-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="Insights &amp; Flow">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insights &amp; Flow
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Highlights individuals with spikes outside normal range</li>
+<li>Connects behavioral change to potential events (e.g., Oct 12 – Rodriguez spike)</li>
+<li>Sets up next phase: focus on specific actors for message investigation</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="section-5" class="level3">
+<h3 class="anchored" data-anchor-id="section-5"><strong>Section 5</strong></h3>
+<p><code>Suspicious Actor Profile: What Is This Person Really Doing?</code></p>
+<p>Zoom into an individual (e.g., Nadia Conti) and reconstruct message context: who she talked to, when, and what was said.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">UI Functions</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">Outputs</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-3" role="tab" aria-controls="tabset-6-3" aria-selected="false">Insights &amp; Flow</a></li></ul>
+<div class="tab-content">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="UI Functions">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+UI Functions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>selectInput(“suspect_person”) – Choose person of interest</li>
+<li>dateInput(“focus_date”) – Choose key suspicious date</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="Outputs">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Outputs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>plotOutput(“top_contacts”) – Bar chart of top counterparts</li>
+<li>dataTableOutput(“msg_table”) – Full log of message content + timestamps</li>
+<li>(Optional) Text summary of communication patterns</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="tabset-6-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-3-tab">
+<div class="callout callout-style-default callout-note callout-titled" title="Insights &amp; Flow">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Insights &amp; Flow
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Reveal contact frequency: who the person talks to the most</li>
+<li>Content inspection shows tone, urgency, or hidden plans</li>
+<li>E.g., Oct 12 message planning linked to security shift &amp; permit #CR-7844</li>
+<li>Strengthens case of coordination and secretive logistics</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="prototype" class="level3">
+<h3 class="anchored" data-anchor-id="prototype"><strong>Prototype</strong></h3>
+<p><img src="data/UI.JPG" class="img-fluid"></p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
